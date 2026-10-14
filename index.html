@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wakely | Wake up your old leads</title>
+<meta name="description" content="Wakely texts your old enquiries, requalifies them and books them back into your diary. Built in the UK. Pay only for appointments.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+:root{
+  --navy:#0E1B33; --navy-2:#16274A; --ink:#1B2233; --muted:#5B6478;
+  --cream:#FBF7F1; --paper:#FFFFFF; --line:#E8E2D8;
+  --amber:#F5A524; --coral:#F26B4F; --mint:#E7F6EE; --green:#1F7A55;
+  --sun:linear-gradient(135deg,#F5A524 0%,#F26B4F 100%);
+  --radius:18px; --shadow:0 24px 60px -24px rgba(14,27,51,.28);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:"Plus Jakarta Sans",system-ui,sans-serif;color:var(--ink);background:var(--cream);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img,video{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1160px;margin:0 auto;padding:0 24px;position:relative;z-index:1}
+h1,h2,h3{font-family:"Fraunces",Georgia,serif;font-weight:600;line-height:1.12;letter-spacing:-.01em;color:var(--navy)}
+h1{font-size:clamp(2.4rem,5.4vw,4.2rem)}
+h2{font-size:clamp(1.9rem,3.6vw,2.8rem)}
+h3{font-size:1.25rem}
+em.sunny{font-style:italic;background:var(--sun);-webkit-background-clip:text;background-clip:text;color:transparent}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:.78rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--coral)}
+.eyebrow::before{content:"";width:18px;height:2px;background:var(--sun);border-radius:2px}
+.lead{font-size:1.15rem;color:var(--muted);max-width:640px}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:15px 26px;border-radius:999px;font-weight:700;font-size:1rem;transition:transform .2s,box-shadow .2s,background .2s,border-color .2s;cursor:pointer;border:0;font-family:inherit}
+.btn-sun{background:var(--sun);color:#fff;box-shadow:0 12px 30px -10px rgba(242,107,79,.6)}
+.btn-sun:hover{transform:translateY(-2px);box-shadow:0 18px 40px -10px rgba(242,107,79,.75)}
+.btn-ghost{background:rgba(255,255,255,.6);color:var(--navy);border:1.5px solid var(--line)}
+.btn-ghost:hover{border-color:var(--amber);background:#fff;transform:translateY(-2px)}
+.btn-navy{background:var(--navy);color:#fff}
+.btn-navy:hover{background:var(--navy-2);transform:translateY(-2px)}
+section{padding:110px 0;position:relative}
+.center{text-align:center;max-width:740px;margin:0 auto 60px}
+.center .lead{margin:16px auto 0}
+.center h2{margin-top:14px}
+
+/* ---------- SUN GLOW (follows cursor) ---------- */
+.glow-zone{position:relative;overflow:hidden;isolation:isolate}
+.glow-zone::after{
+  content:"";position:absolute;inset:0;z-index:0;pointer-events:none;opacity:0;transition:opacity .6s;
+  background:radial-gradient(520px circle at var(--mx,50%) var(--my,50%),rgba(245,165,36,.20),rgba(242,107,79,.08) 40%,transparent 70%);
+}
+.glow-zone:hover::after{opacity:1}
+.dark.glow-zone::after{background:radial-gradient(560px circle at var(--mx,50%) var(--my,50%),rgba(245,165,36,.22),rgba(242,107,79,.10) 40%,transparent 70%)}
+
+/* ---------- CARDS with hover ---------- */
+.card{
+  background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:30px 28px;position:relative;overflow:hidden;
+  transition:transform .3s cubic-bezier(.2,.7,.3,1),box-shadow .3s,border-color .3s;
+}
+.card::before{
+  content:"";position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .35s;
+  background:radial-gradient(280px circle at var(--mx,50%) var(--my,0%),rgba(245,165,36,.16),transparent 65%);
+}
+.card::after{
+  content:"";position:absolute;left:0;right:0;top:0;height:3px;background:var(--sun);transform:scaleX(0);transform-origin:left;transition:transform .4s;
+}
+.card:hover{transform:translateY(-6px);box-shadow:var(--shadow);border-color:#F3D9A8}
+.card:hover::before{opacity:1}
+.card:hover::after{transform:scaleX(1)}
+.card > *{position:relative}
+
+/* ---------- NAV ---------- */
+nav{position:sticky;top:0;z-index:50;background:rgba(251,247,241,.86);backdrop-filter:blur(14px);border-bottom:1px solid transparent;transition:border-color .3s}
+nav.scrolled{border-color:var(--line)}
+.nav-in{display:flex;align-items:center;justify-content:space-between;height:76px}
+.logo{display:flex;align-items:center;font-family:"Fraunces",serif;font-size:1.75rem;font-weight:600;color:var(--navy)}
+.logo .sun{width:12px;height:12px;border-radius:50%;background:var(--sun);margin-left:3px;transform:translateY(-8px);box-shadow:0 0 0 4px rgba(245,165,36,.18);animation:pulse 3.5s ease-in-out infinite}
+@keyframes pulse{50%{box-shadow:0 0 0 8px rgba(245,165,36,.08)}}
+.nav-links{display:flex;gap:6px;font-weight:600;font-size:.95rem;color:var(--muted)}
+.nav-links a{padding:9px 14px;border-radius:999px;transition:background .2s,color .2s}
+.nav-links a:hover{color:var(--navy);background:rgba(245,165,36,.12)}
+.nav-links a.active{color:var(--navy);background:#fff;box-shadow:0 2px 10px -4px rgba(14,27,51,.15)}
+.nav-cta{padding:11px 20px;font-size:.92rem}
+.burger{display:none;background:none;border:0;cursor:pointer;padding:8px}
+.burger span{display:block;width:24px;height:2px;background:var(--navy);margin:5px 0;border-radius:2px}
+@media(max-width:900px){
+  .nav-links{display:none;position:absolute;top:76px;left:0;right:0;flex-direction:column;background:var(--cream);padding:16px 24px 24px;border-bottom:1px solid var(--line)}
+  .nav-links.open{display:flex}
+  .burger{display:block}
+  .nav-cta{display:none}
+}
+
+/* ---------- HERO ---------- */
+.hero{padding:70px 0 100px}
+.hero .orb{position:absolute;width:820px;height:820px;right:-280px;top:-320px;border-radius:50%;background:radial-gradient(circle,rgba(245,165,36,.26),rgba(242,107,79,.08) 45%,transparent 70%);z-index:0;animation:rise 9s ease-in-out infinite}
+@keyframes rise{50%{transform:translateY(30px) scale(1.04)}}
+.hero-top{text-align:center;max-width:880px;margin:0 auto}
+.hero-top .lead{margin:22px auto 0;text-align:center}
+.origin{display:inline-flex;align-items:center;gap:10px;padding:8px 16px 8px 8px;background:#fff;border:1px solid var(--line);border-radius:999px;font-size:.85rem;font-weight:600;color:var(--navy);margin-bottom:26px;transition:border-color .3s,box-shadow .3s}
+.origin:hover{border-color:var(--amber);box-shadow:0 6px 20px -8px rgba(245,165,36,.5)}
+.flag-uk{width:24px;height:24px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1px var(--line);background:
+ linear-gradient(90deg,transparent 42%,#C8102E 42% 58%,transparent 58%),
+ linear-gradient(transparent 42%,#C8102E 42% 58%,transparent 58%),
+ linear-gradient(90deg,transparent 34%,#fff 34% 66%,transparent 66%),
+ linear-gradient(transparent 34%,#fff 34% 66%,transparent 66%),#012169}
+.hero-ctas{display:flex;gap:14px;justify-content:center;margin-top:34px;flex-wrap:wrap}
+.page-hero{padding:80px 0 70px;text-align:center}
+.page-hero .lead{margin:20px auto 0}
+
+/* ---------- VIDEO ---------- */
+.vsl{margin:64px auto 0;max-width:960px;position:relative}
+.vsl-frame{position:relative;border-radius:24px;overflow:hidden;background:var(--navy);aspect-ratio:16/9;box-shadow:0 40px 80px -30px rgba(14,27,51,.55);border:6px solid #fff;transition:transform .4s}
+.vsl:hover .vsl-frame{transform:scale(1.01)}
+.vsl-frame video{width:100%;height:100%;object-fit:cover}
+.vsl-placeholder{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;color:#fff;text-align:center;background:
+ radial-gradient(circle at 70% 20%,rgba(245,165,36,.35),transparent 50%),
+ radial-gradient(circle at 20% 90%,rgba(242,107,79,.25),transparent 45%),var(--navy)}
+.play{width:90px;height:90px;border-radius:50%;background:var(--sun);display:grid;place-items:center;box-shadow:0 0 0 14px rgba(255,255,255,.08),0 0 60px rgba(245,165,36,.5);cursor:pointer;transition:transform .25s,box-shadow .25s}
+.play:hover{transform:scale(1.08);box-shadow:0 0 0 20px rgba(255,255,255,.1),0 0 90px rgba(245,165,36,.7)}
+.play svg{margin-left:6px}
+.vsl-placeholder p{font-weight:600;opacity:.9}
+.vsl-placeholder small{opacity:.55;font-size:.8rem}
+.float-tag{position:absolute;background:#fff;border-radius:14px;padding:12px 16px;box-shadow:var(--shadow);font-size:.85rem;font-weight:600;display:flex;align-items:center;gap:10px;animation:bob 5s ease-in-out infinite}
+.float-tag .dot{width:10px;height:10px;border-radius:50%;background:#22C55E;box-shadow:0 0 0 4px rgba(34,197,94,.2)}
+.ft-1{left:-24px;bottom:50px}
+.ft-2{right:-24px;top:50px;animation-delay:-2.5s}
+@keyframes bob{50%{transform:translateY(-8px)}}
+@media(max-width:760px){.float-tag{display:none}}
+
+/* ---------- STRIP ---------- */
+.strip{background:var(--navy);color:#fff;padding:24px 0;overflow:hidden}
+.marquee{display:flex;gap:56px;white-space:nowrap;animation:scroll 32s linear infinite;width:max-content;font-weight:600;font-size:.95rem}
+.marquee div{display:flex;align-items:center;gap:12px;opacity:.9}
+.marquee i{width:8px;height:8px;border-radius:50%;background:var(--amber);display:block;box-shadow:0 0 12px var(--amber)}
+@keyframes scroll{to{transform:translateX(-50%)}}
+
+/* ---------- LAYOUTS ---------- */
+.split{display:grid;grid-template-columns:1.05fr 1fr;gap:70px;align-items:center}
+@media(max-width:900px){.split{grid-template-columns:1fr;gap:44px}}
+.grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+@media(max-width:960px){.grid-4{grid-template-columns:repeat(2,1fr)}.grid-3{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.grid-4,.grid-3,.grid-2{grid-template-columns:1fr}}
+
+/* stats */
+.stat-stack{display:grid;gap:16px}
+.stat{display:flex;gap:22px;align-items:flex-start}
+.stat b{font-family:"Fraunces",serif;font-size:2rem;color:var(--navy);line-height:1;min-width:92px}
+.stat p{color:var(--muted);font-size:.98rem}
+.stat p strong{color:var(--ink)}
+
+/* steps */
+.steps{counter-reset:s}
+.step::before{counter-increment:s;content:"0" counter(s);font-family:"Fraunces",serif;font-size:.95rem;font-weight:600;color:var(--coral);display:block;margin-bottom:20px}
+.ico{width:48px;height:48px;border-radius:14px;background:var(--cream);display:grid;place-items:center;margin-bottom:18px;font-size:1.35rem;transition:background .3s,transform .3s}
+.card:hover .ico{background:var(--sun);transform:rotate(-6deg) scale(1.05)}
+.card h3{margin-bottom:8px}
+.card p{color:var(--muted);font-size:.95rem}
+
+/* ---------- DARK BAND ---------- */
+.dark{background:var(--navy);color:#fff;border-radius:36px;margin:0 16px;padding:100px 0}
+.dark h2,.dark h3{color:#fff}
+.dark .lead{color:rgba(255,255,255,.72)}
+
+/* ---------- PHONE + CONVO ---------- */
+.phone{width:340px;max-width:100%;margin:0 auto;background:#0A1426;border-radius:46px;padding:14px;box-shadow:0 40px 80px -20px rgba(0,0,0,.6),inset 0 0 0 2px rgba(255,255,255,.08),0 0 0 0 rgba(245,165,36,0);transition:box-shadow .5s,transform .5s}
+.phone:hover{transform:translateY(-6px) rotate(-1deg);box-shadow:0 50px 90px -20px rgba(0,0,0,.6),inset 0 0 0 2px rgba(255,255,255,.08),0 0 80px 0 rgba(245,165,36,.35)}
+.screen{background:#F4F1EC;border-radius:34px;padding:22px 14px 26px;min-height:560px;color:var(--ink);position:relative}
+.screen::before{content:"";position:absolute;top:8px;left:50%;transform:translateX(-50%);width:90px;height:6px;border-radius:6px;background:#D9D3C8}
+.screen-head{text-align:center;font-size:.78rem;color:var(--muted);margin:8px 0 16px}
+.screen-head b{display:block;color:var(--ink);font-size:.92rem}
+.msg{max-width:82%;padding:10px 14px;border-radius:18px;font-size:.86rem;line-height:1.45;margin-bottom:10px;opacity:0;transform:translateY(10px) scale(.97);transition:all .5s cubic-bezier(.2,.7,.3,1)}
+.msg.show{opacity:1;transform:none}
+.msg.out{background:#fff;border-bottom-left-radius:6px;box-shadow:0 2px 6px -3px rgba(0,0,0,.12)}
+.msg.in{background:var(--sun);color:#fff;margin-left:auto;border-bottom-right-radius:6px}
+.typing{display:inline-flex;gap:4px;padding:12px 14px;background:#fff;border-radius:18px;border-bottom-left-radius:6px;margin-bottom:10px}
+.typing span{width:6px;height:6px;border-radius:50%;background:#B7B0A4;animation:blink 1.2s infinite}
+.typing span:nth-child(2){animation-delay:.2s}.typing span:nth-child(3){animation-delay:.4s}
+@keyframes blink{0%,60%,100%{opacity:.3}30%{opacity:1}}
+.booked{margin-top:14px;background:var(--mint);border:1px solid #BFE6D2;color:var(--green);border-radius:14px;padding:12px 14px;font-size:.82rem;font-weight:700;display:flex;gap:10px;align-items:center;opacity:0;transform:translateY(8px);transition:all .6s}
+.booked.show{opacity:1;transform:none}
+.replay{margin-top:18px;text-align:center}
+.replay button{background:none;border:1px solid rgba(255,255,255,.25);color:rgba(255,255,255,.8);padding:8px 16px;border-radius:999px;font-family:inherit;font-weight:600;font-size:.82rem;cursor:pointer;transition:all .2s}
+.replay button:hover{border-color:var(--amber);color:#fff;background:rgba(245,165,36,.12)}
+.light .replay button{color:var(--muted);border-color:var(--line)}
+.light .replay button:hover{color:var(--navy);border-color:var(--amber)}
+.cp{display:flex;gap:18px;padding:16px;border-radius:16px;transition:background .3s}
+.cp:hover{background:rgba(255,255,255,.05)}
+.cp .n{flex:none;width:40px;height:40px;border-radius:50%;border:1.5px solid rgba(255,255,255,.25);display:grid;place-items:center;font-weight:700;color:var(--amber);transition:all .3s}
+.cp:hover .n{background:var(--sun);color:#fff;border-color:transparent}
+.cp h3{font-size:1.1rem;margin-bottom:4px}
+.cp p{color:rgba(255,255,255,.68);font-size:.95rem}
+
+/* ---------- INDUSTRY TABS ---------- */
+.tabs{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:50px}
+.tab{padding:11px 18px;border-radius:999px;border:1.5px solid var(--line);background:#fff;font-weight:600;font-size:.92rem;cursor:pointer;font-family:inherit;color:var(--muted);transition:all .25s}
+.tab:hover{border-color:var(--amber);color:var(--navy)}
+.tab.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+.ind-panel h2{margin:14px 0 16px}
+.ind-facts{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:28px 0}
+.fact{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px;transition:all .3s}
+.fact:hover{border-color:var(--amber);transform:translateY(-3px)}
+.fact small{display:block;font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.fact b{font-family:"Fraunces",serif;font-size:1.35rem;color:var(--navy)}
+.checks{list-style:none;display:grid;gap:10px}
+.checks li{display:flex;gap:10px;color:var(--ink)}
+.checks li::before{content:"✓";color:var(--coral);font-weight:800}
+.tag{align-self:flex-start;display:inline-block;font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:5px 10px;border-radius:999px;background:var(--cream);color:var(--muted);margin-bottom:12px;transition:all .3s}
+.card:hover .tag{background:rgba(245,165,36,.15);color:var(--coral)}
+.card .more{display:inline-flex;margin-top:14px;font-weight:700;color:var(--navy);font-size:.92rem;gap:6px;transition:gap .2s}
+.card:hover .more{gap:12px;color:var(--coral)}
+
+/* ---------- CALCULATOR ---------- */
+.calc{background:#fff;border:1px solid var(--line);border-radius:28px;padding:48px;display:grid;grid-template-columns:1fr 1fr;gap:56px;box-shadow:var(--shadow)}
+@media(max-width:860px){.calc{grid-template-columns:1fr;padding:30px}}
+.field{margin-bottom:28px}
+.field label{display:flex;justify-content:space-between;font-weight:600;margin-bottom:10px;font-size:.95rem}
+.field label output{color:var(--coral);font-weight:700}
+input[type=range]{width:100%;accent-color:var(--coral);height:6px;cursor:pointer}
+.result{background:var(--navy);color:#fff;border-radius:22px;padding:36px;display:flex;flex-direction:column;justify-content:center}
+.result small{opacity:.65;font-weight:600;letter-spacing:.06em;text-transform:uppercase;font-size:.75rem}
+.result .big{font-family:"Fraunces",serif;font-size:clamp(2.6rem,5vw,3.6rem);background:var(--sun);-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1.1;margin:6px 0 20px}
+.result .row{display:flex;justify-content:space-between;padding:12px 0;border-top:1px solid rgba(255,255,255,.12);font-size:.95rem}
+.result .row b{color:var(--amber)}
+.result .note{font-size:.75rem;opacity:.5;margin-top:16px}
+
+/* ---------- PRICING ---------- */
+.pricing{max-width:940px;margin:0 auto}
+.plan{padding:40px}
+.plan.feature{background:var(--navy);color:#fff;border-color:var(--navy)}
+.plan.feature h3{color:#fff}
+.plan.feature p,.plan.feature .sub{color:rgba(255,255,255,.7)}
+.badge{position:absolute;top:22px;right:22px;background:var(--sun);color:#fff;font-size:.72rem;font-weight:700;padding:6px 12px;border-radius:999px}
+.price{font-family:"Fraunces",serif;font-size:2.4rem;margin:14px 0 4px;color:var(--navy)}
+.plan.feature .price{color:#fff}
+.sub{font-size:.9rem;color:var(--muted);margin-bottom:24px}
+.plan ul{list-style:none;display:grid;gap:12px;margin-bottom:30px}
+.plan li{display:flex;gap:10px;font-size:.95rem}
+.plan li::before{content:"✓";color:var(--coral);font-weight:700}
+.plan.feature li::before{color:var(--amber)}
+
+/* ---------- RESULTS / CASE STUDIES ---------- */
+.case{display:grid;grid-template-columns:1fr 1.2fr;gap:0;padding:0}
+@media(max-width:860px){.case{grid-template-columns:1fr}}
+.case-side{background:var(--navy);color:#fff;padding:38px;display:flex;flex-direction:column;justify-content:space-between;gap:30px}
+.case-side h3{color:#fff;font-size:1.5rem}
+.case-side .tag{background:rgba(255,255,255,.1);color:var(--amber)}
+.case-logo{width:56px;height:56px;border-radius:14px;background:rgba(255,255,255,.08);border:1px dashed rgba(255,255,255,.3);display:grid;place-items:center;font-size:.7rem;color:rgba(255,255,255,.6);margin-bottom:18px}
+.case-nums{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.case-nums div small{display:block;font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;opacity:.6}
+.case-nums div b{font-family:"Fraunces",serif;font-size:1.6rem;background:var(--sun);-webkit-background-clip:text;background-clip:text;color:transparent}
+.case-body{padding:38px}
+.case-body h4{font-size:.8rem;text-transform:uppercase;letter-spacing:.1em;color:var(--coral);margin:0 0 6px}
+.case-body p{margin-bottom:18px;color:var(--muted)}
+.quote{border-left:3px solid var(--amber);padding:6px 0 6px 18px;font-family:"Fraunces",serif;font-size:1.1rem;color:var(--navy);font-style:italic}
+.quote cite{display:block;font-family:"Plus Jakarta Sans",sans-serif;font-style:normal;font-size:.85rem;color:var(--muted);margin-top:8px}
+.ph{background:rgba(245,165,36,.14);border-radius:4px;padding:0 4px;color:#B4660E;font-style:normal}
+.case-side .ph{color:var(--amber);background:rgba(245,165,36,.15)}
+.template-note{max-width:760px;margin:0 auto 40px;background:#FFF6E6;border:1px dashed var(--amber);border-radius:14px;padding:14px 18px;font-size:.9rem;color:#8A5410;text-align:center}
+.big-stats .card{text-align:center}
+.big-stats b{display:block;font-family:"Fraunces",serif;font-size:2.6rem;background:var(--sun);-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1.1}
+.big-stats span{color:var(--muted);font-size:.92rem}
+
+/* ---------- COMPLIANCE ---------- */
+.comp .card{border-top:3px solid var(--navy)}
+
+/* ---------- FAQ ---------- */
+.faq{max-width:800px;margin:0 auto}
+details{border-bottom:1px solid var(--line);padding:22px 16px;border-radius:12px;transition:background .3s}
+details:hover{background:rgba(245,165,36,.07)}
+summary{cursor:pointer;font-weight:700;font-size:1.05rem;list-style:none;display:flex;justify-content:space-between;align-items:center;color:var(--navy);gap:20px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";font-size:1.5rem;color:var(--coral);transition:transform .3s;flex:none}
+details[open] summary::after{transform:rotate(45deg)}
+details p{color:var(--muted);margin-top:12px}
+
+/* ---------- CTA ---------- */
+.cta{background:var(--sun);border-radius:36px;margin:0 16px;padding:90px 0;color:#fff;text-align:center}
+.cta h2{color:#fff;max-width:740px;margin:0 auto}
+.cta p{opacity:.94;margin:16px auto 34px;max-width:580px;font-size:1.1rem}
+.cta.glow-zone::after{background:radial-gradient(420px circle at var(--mx,50%) var(--my,50%),rgba(255,255,255,.28),transparent 65%)}
+form.audit{display:flex;gap:12px;max-width:640px;margin:0 auto;flex-wrap:wrap;justify-content:center}
+form.audit input{flex:1 1 200px;padding:16px 20px;border-radius:999px;border:2px solid transparent;font-family:inherit;font-size:1rem;outline:none;transition:border-color .2s}
+form.audit input:focus{border-color:var(--navy)}
+.cta small{display:block;margin-top:18px;opacity:.88;font-size:.85rem}
+
+/* ---------- FOOTER ---------- */
+footer{padding:60px 0 40px;color:var(--muted);font-size:.9rem}
+.foot{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:30px;border-top:1px solid var(--line);padding-top:40px}
+@media(max-width:800px){.foot{grid-template-columns:1fr 1fr}}
+.foot h5{font-size:.78rem;text-transform:uppercase;letter-spacing:.1em;color:var(--navy);margin-bottom:12px}
+.foot a{display:block;padding:3px 0;transition:color .2s}
+.foot a:hover{color:var(--coral)}
+.made{display:flex;align-items:center;gap:10px;font-weight:600;color:var(--navy);margin-top:14px}
+.legal{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-top:36px;font-size:.82rem}
+
+/* ---------- REVEAL ---------- */
+.js .reveal{opacity:0;transform:translateY(26px);transition:opacity .8s,transform .8s cubic-bezier(.2,.7,.3,1)}
+.js .reveal.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
+
+</style>
+<style>
+/* ---------- MOBILE ---------- */
+.results-teaser{display:grid;grid-template-columns:1.3fr 1fr;gap:40px;align-items:center;padding:50px!important}
+.results-teaser .go{text-align:right}
+@media(max-width:760px){
+  section{padding:64px 0}
+  .wrap{padding:0 18px}
+  .hero{padding:36px 0 60px}
+  .page-hero{padding:48px 0 40px}
+  .hero .orb{width:480px;height:480px;right:-200px;top:-200px}
+  h1{font-size:2.15rem}
+  h2{font-size:1.7rem}
+  .lead{font-size:1.02rem}
+  .origin{font-size:.75rem;padding:6px 12px 6px 6px;text-align:left}
+  .hero-ctas{flex-direction:column;align-items:stretch}
+  .hero-ctas .btn,.plan .btn,.dark .btn-sun{justify-content:center;width:100%}
+  .vsl{margin-top:36px}
+  .vsl-frame{border-width:4px;border-radius:16px}
+  .play{width:66px;height:66px}
+  .vsl-placeholder p{font-size:.9rem;padding:0 12px}
+  .dark,.cta{margin:0 10px;border-radius:24px;padding:60px 0}
+  .card{padding:24px 20px}
+  .card:hover{transform:none}
+  .phone{width:300px}
+  .screen{min-height:500px}
+  .stat b{min-width:64px;font-size:1.6rem}
+  .center{margin-bottom:36px}
+  .results-teaser{grid-template-columns:1fr;gap:20px;padding:30px 22px!important}
+  .results-teaser .go{text-align:left}
+  .results-teaser .btn{width:100%;justify-content:center}
+  .calc{padding:22px;gap:28px;border-radius:20px}
+  .result{padding:26px}
+  .plan{padding:28px 22px}
+  .badge{position:static;display:inline-block;margin-bottom:10px}
+  .ind-facts{grid-template-columns:1fr}
+  .tabs{flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start;padding-bottom:8px;margin:0 -18px 30px;padding-left:18px;scrollbar-width:none}
+  .tabs::-webkit-scrollbar{display:none}
+  .tab{flex:none}
+  .case-side,.case-body{padding:26px 22px}
+  .case-nums b{font-size:1.3rem!important}
+  .big-stats b{font-size:2rem}
+  form.audit{flex-direction:column;align-items:stretch;padding:0 4px}
+  form.audit .btn{justify-content:center}
+  .foot{grid-template-columns:1fr;gap:24px}
+  .legal{flex-direction:column}
+  .marquee{font-size:.85rem;gap:36px}
+  .cp{padding:12px 0}
+}
+@media(hover:none){.glow-zone::after,.card::before{display:none}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap nav-in">
+    <a href="index.html" class="logo">wakely<span class="sun"></span></a>
+    <div class="nav-links">
+      <a href="index.html" class="active">Home</a>
+      <a href="index.html#how">How it works</a>
+      <a href="industries.html">Industries</a>
+      <a href="results.html">Client results</a>
+      <a href="index.html#pricing">Pricing</a>
+      <a href="index.html#faq">FAQ</a>
+    </div>
+    <a href="#audit" class="btn btn-sun nav-cta">Free list audit</a>
+    <button class="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero glow-zone">
+  <div class="orb"></div>
+  <div class="wrap">
+    <div class="hero-top">
+      <div class="origin"><span class="flag-uk"></span>Built in the UK · Working with businesses across the UK</div>
+      <h1>Your old leads aren't dead.<br>They're <em class="sunny">asleep.</em></h1>
+      <p class="lead">Wakely texts your old enquiries and unsold quotes, finds out who's still interested, and books them straight back into your diary. You only pay for the appointments.</p>
+      <div class="hero-ctas">
+        <a href="#audit" class="btn btn-sun">See what your list is worth →</a>
+        <a href="#how" class="btn btn-ghost">How it works</a>
+      </div>
+    </div>
+    <div class="vsl reveal">
+      <div class="vsl-frame">
+        <!-- Put your VSL next to this page and name it vsl.mp4 -->
+        <video id="vsl" src="vsl.mp4" controls playsinline preload="metadata" style="display:none"></video>
+        <div class="vsl-placeholder" id="vslPh">
+          <div class="play" id="playBtn" aria-label="Play video"><svg width="30" height="30" viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z"/></svg></div>
+          <p>Watch: how Wakely wakes up your old leads</p>
+          <small>2-minute overview</small>
+        </div>
+      </div>
+      <div class="float-tag ft-1"><span class="dot"></span>New reply: "Yes, still interested!"</div>
+      <div class="float-tag ft-2">📅 Appointment booked · Thu 10:00</div>
+    </div>
+  </div>
+</header>
+
+<div class="strip">
+  <div class="marquee">
+    <div><i></i>Pay per appointment</div><div><i></i>Built in the UK</div><div><i></i>Texts sent in your name</div><div><i></i>UK GDPR &amp; PECR-minded</div><div><i></i>Live in under 14 days</div><div><i></i>No new ad spend</div><div><i></i>Every reply handled</div>
+    <div><i></i>Pay per appointment</div><div><i></i>Built in the UK</div><div><i></i>Texts sent in your name</div><div><i></i>UK GDPR &amp; PECR-minded</div><div><i></i>Live in under 14 days</div><div><i></i>No new ad spend</div><div><i></i>Every reply handled</div>
+  </div>
+</div>
+
+<!-- PROBLEM -->
+<section class="glow-zone">
+  <div class="wrap split">
+    <div class="reveal">
+      <span class="eyebrow">The problem</span>
+      <h2 style="margin:14px 0 20px">You've already paid for these leads. Then they went quiet.</h2>
+      <p class="lead">Every enquiry costs you something: ad spend, a quote visit, a phone call. Most never book, not because they said no, but because nobody followed up at the right moment. They're sitting in your CRM, your inbox, or a spreadsheet nobody opens.</p>
+    </div>
+    <div class="stat-stack">
+      <div class="card stat reveal"><b>£££</b><p><strong>Already spent acquiring leads</strong> that never got a proper second follow-up.</p></div>
+      <div class="card stat reveal"><b>1–2</b><p><strong>Follow-ups is where most teams stop</strong>, long before the customer was ready to decide.</p></div>
+      <div class="card stat reveal"><b>£0</b><p><strong>New ad spend needed.</strong> Wakely works the list you already own.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW -->
+<section id="how" class="glow-zone" style="padding-top:30px">
+  <div class="wrap">
+    <div class="center reveal">
+      <span class="eyebrow">How it works</span>
+      <h2>From forgotten list to full diary in four steps</h2>
+      <p class="lead">We do the work. You show up to the appointments.</p>
+    </div>
+    <div class="grid-4 steps">
+      <div class="card step reveal"><div class="ico">📋</div><h3>Send us your list</h3><p>Old enquiries, unsold quotes, no-shows. We clean it, remove opt-outs and check consent.</p></div>
+      <div class="card step reveal"><div class="ico">✍️</div><h3>We write your campaign</h3><p>Friendly, personal texts written for your industry, in your business's name and tone.</p></div>
+      <div class="card step reveal"><div class="ico">💬</div><h3>We handle the replies</h3><p>Every response answered, questions handled, interested leads qualified.</p></div>
+      <div class="card step reveal"><div class="ico">📅</div><h3>You get appointments</h3><p>Qualified leads booked straight into your calendar. You only pay for those.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONVERSATION -->
+<section class="dark glow-zone">
+  <div class="wrap split">
+    <div class="reveal">
+      <div class="phone"><div class="screen" id="homeScreen" data-convo="home">
+        <div class="screen-head"><b>Brightline Kitchens</b>Text message · Today</div>
+        <div class="convo-body"></div>
+      </div></div>
+      <div class="replay"><button data-replay="homeScreen">↻ Replay conversation</button></div>
+    </div>
+    <div class="reveal">
+      <span class="eyebrow">What your customers see</span>
+      <h2 style="margin:14px 0 18px">A friendly nudge. Not a sales blast.</h2>
+      <p class="lead" style="margin-bottom:30px">Every message sounds like it came from someone on your team, because it's written that way. No robotic templates, no pushy offers.</p>
+      <div>
+        <div class="cp"><div class="n">1</div><div><h3>Personal first text</h3><p>References what they actually asked about, and when.</p></div></div>
+        <div class="cp"><div class="n">2</div><div><h3>A real conversation</h3><p>Questions answered and objections handled, at any time of day.</p></div></div>
+        <div class="cp"><div class="n">3</div><div><h3>Straight into your diary</h3><p>Booked into your calendar, with reminders to cut no-shows.</p></div></div>
+      </div>
+      <a href="industries.html" class="btn btn-sun" style="margin-top:26px">See conversations for your industry →</a>
+    </div>
+  </div>
+</section>
+
+<!-- INDUSTRIES TEASER -->
+<section class="glow-zone">
+  <div class="wrap">
+    <div class="center reveal">
+      <span class="eyebrow">Who it's for</span>
+      <h2>Built for businesses where one booking is worth thousands</h2>
+    </div>
+    <div class="grid-3">
+      <a href="industries.html#home" class="card reveal"><span class="tag">Home improvement</span><h3>Kitchens, windows, extensions</h3><p>Unsold quotes are your biggest untapped asset.</p><span class="more">Explore →</span></a>
+      <a href="industries.html#solar" class="card reveal"><span class="tag">Energy</span><h3>Solar, batteries &amp; heat pumps</h3><p>New prices and grants give old leads a fresh reason to talk.</p><span class="more">Explore →</span></a>
+      <a href="industries.html#dental" class="card reveal"><span class="tag">Dental</span><h3>Implants, Invisalign, cosmetic</h3><p>Turn "I'll think about it" into booked treatment.</p><span class="more">Explore →</span></a>
+      <a href="industries.html#aesthetics" class="card reveal"><span class="tag">Aesthetics</span><h3>Clinics &amp; cosmetic surgery</h3><p>Re-engage past enquiries and lapsed clients.</p><span class="more">Explore →</span></a>
+      <a href="industries.html#auto" class="card reveal"><span class="tag">Automotive</span><h3>Car sales &amp; finance</h3><p>Bring test-drive enquiries back to the forecourt.</p><span class="more">Explore →</span></a>
+      <a href="industries.html#property" class="card reveal"><span class="tag">Property</span><h3>Estate &amp; letting agents</h3><p>Valuations that never listed, landlords who never signed.</p><span class="more">Explore →</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- RESULTS TEASER -->
+<section class="glow-zone" style="padding-top:0">
+  <div class="wrap">
+    <div class="card reveal results-teaser">
+      <div>
+        <span class="eyebrow">Client results</span>
+        <h2 style="margin:12px 0 14px">Real businesses. Real bookings.</h2>
+        <p>See how businesses we've worked with turned their old lists into booked appointments, with the numbers to prove it.</p>
+      </div>
+      <div class="go"><a href="results.html" class="btn btn-navy">View client results →</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- CALCULATOR -->
+<section id="calculator" class="glow-zone" style="padding-top:20px">
+  <div class="wrap">
+    <div class="center reveal">
+      <span class="eyebrow">What's your list worth?</span>
+      <h2>Do the maths on your sleeping leads</h2>
+    </div>
+    <div class="calc reveal">
+      <div>
+        <div class="field"><label>Old leads on your list <output id="oLeads"></output></label><input type="range" id="leads" min="200" max="10000" step="100" value="2000"></div>
+        <div class="field"><label>Average job value <output id="oValue"></output></label><input type="range" id="value" min="500" max="40000" step="500" value="8000"></div>
+        <div class="field"><label>Booking rate <output id="oBook"></output></label><input type="range" id="book" min="1" max="5" step="0.5" value="2"></div>
+        <div class="field"><label>Your close rate <output id="oClose"></output></label><input type="range" id="close" min="5" max="50" step="5" value="20"></div>
+      </div>
+      <div class="result">
+        <small>Potential revenue from your old list</small>
+        <div class="big" id="rev"></div>
+        <div class="row"><span>Appointments booked</span><b id="appts"></b></div>
+        <div class="row"><span>New customers</span><b id="custs"></b></div>
+        <div class="note">Illustrative estimate only. Real results depend on list age, quality and consent.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing" class="glow-zone" style="padding-top:20px">
+  <div class="wrap">
+    <div class="center reveal"><span class="eyebrow">Pricing</span><h2>You only pay when it works</h2></div>
+    <div class="grid-2 pricing">
+      <div class="card plan feature reveal">
+        <span class="badge">Most popular</span>
+        <h3>Pay per appointment</h3>
+        <div class="price">£0 upfront</div>
+        <div class="sub">A fixed fee per qualified appointment that turns up</div>
+        <ul><li>Full list cleaning &amp; consent check</li><li>Industry-specific campaign</li><li>All replies handled for you</li><li>Bookings straight to your calendar</li><li>Live results report</li></ul>
+        <a href="#audit" class="btn btn-sun">Start with a free audit</a>
+      </div>
+      <div class="card plan reveal">
+        <h3>Ongoing partnership</h3>
+        <div class="price">Monthly</div>
+        <div class="sub">For businesses with a steady flow of new enquiries</div>
+        <ul><li>Everything in pay per appointment</li><li>Monthly revival of new cold leads</li><li>Instant replies to new enquiries</li><li>Past-customer win-back campaigns</li><li>Optional human callback add-on</li></ul>
+        <a href="#audit" class="btn btn-ghost">Talk to us</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPLIANCE -->
+<section class="glow-zone" style="padding-top:20px">
+  <div class="wrap">
+    <div class="center reveal"><span class="eyebrow">Done properly</span><h2>Built around UK rules, not American ones</h2></div>
+    <div class="grid-4 comp">
+      <div class="card reveal"><div class="ico">🔍</div><h3>Consent checked</h3><p>Every list is reviewed for where leads came from before a single text goes out.</p></div>
+      <div class="card reveal"><div class="ico">✋</div><h3>Opt-outs honoured</h3><p>Every message offers a free opt-out, respected across all campaigns.</p></div>
+      <div class="card reveal"><div class="ico">🔒</div><h3>Your data stays yours</h3><p>We act as your data processor under a signed agreement. No list reselling, ever.</p></div>
+      <div class="card reveal"><div class="ico">🏷️</div><h3>Sent in your name</h3><p>Customers hear from your business, so the trust stays with you.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" style="padding-top:20px">
+  <div class="wrap">
+    <div class="center reveal"><span class="eyebrow">FAQ</span><h2>Questions owners ask us</h2></div>
+    <div class="faq">
+      <details><summary>Will the texts sound like a robot?</summary><p>No. Every campaign is written for your industry and sent in your business's name, in a warm, natural tone. Replies read like someone from your team.</p></details>
+      <details><summary>How old can the leads be?</summary><p>The fresher the better, but leads from the last one to three years often respond well. We'll tell you honestly what's worth contacting during your free audit.</p></details>
+      <details><summary>Is this compliant with UK rules?</summary><p>Yes, when done properly. We check how each lead was collected, include an opt-out in every message, and work under a data processing agreement with you.</p></details>
+      <details><summary>What do I need to provide?</summary><p>Your list of old enquiries (a spreadsheet export is fine), your services and rough pricing, and access to your calendar. We handle the rest.</p></details>
+      <details><summary>How quickly will I see appointments?</summary><p>Most campaigns go live within two weeks, and first replies usually come in within hours of the first texts going out.</p></details>
+      <details><summary>Do you work outside the UK?</summary><p>We're UK-based and UK-focused, and we're happy to talk to businesses in Ireland too.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section style="padding:0 0 60px" id="audit">
+  <div class="cta glow-zone">
+    <div class="wrap">
+      <h2>Find out what your sleeping leads are worth</h2>
+      <p>Get a free list audit. We'll tell you how many of your old leads are worth waking up, and what that could mean in booked appointments.</p>
+      <form class="audit"><input type="text" placeholder="Business name" required><input type="email" placeholder="Work email" required><button class="btn btn-navy" type="submit">Get my free audit</button></form>
+      <small>No obligation. No upfront cost.</small>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <div><a href="index.html" class="logo" style="font-size:1.45rem">wakely<span class="sun"></span></a><p style="margin-top:8px">Wake up your old leads.</p><div class="made"><span class="flag-uk"></span>Proudly built in the UK</div></div>
+      <div><h5>Company</h5><a href="index.html#how">How it works</a><a href="results.html">Client results</a><a href="index.html#pricing">Pricing</a></div>
+      <div><h5>Industries</h5><a href="industries.html#home">Home improvement</a><a href="industries.html#solar">Solar &amp; energy</a><a href="industries.html#dental">Dental</a><a href="industries.html#aesthetics">Aesthetics</a></div>
+      <div><h5>Contact</h5><a href="#audit">Free list audit</a><a href="mailto:hello@wakely.co.uk">hello@wakely.co.uk</a></div>
+    </div>
+    <div class="legal"><span>© <span class="yr"></span> Wakely Ltd · Registered in England &amp; Wales</span><span>Privacy · Terms</span></div>
+  </div>
+</footer>
+<script>
+// ---------- Nav ----------
+const nav = document.querySelector('nav');
+addEventListener('scroll', () => nav && nav.classList.toggle('scrolled', scrollY > 10));
+const burger = document.querySelector('.burger');
+if (burger) burger.onclick = () => document.querySelector('.nav-links').classList.toggle('open');
+
+// ---------- Reveal on scroll ----------
+const io = new IntersectionObserver(es => es.forEach(e => {
+  if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+}), { threshold: .12 });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+// ---------- Sun glow follows the cursor ----------
+document.querySelectorAll('.glow-zone, .card').forEach(el => {
+  el.addEventListener('mousemove', e => {
+    const r = el.getBoundingClientRect();
+    el.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+    el.style.setProperty('--my', (e.clientY - r.top) + 'px');
+  });
+});
+
+// ---------- Text conversation engine ----------
+const wait = ms => new Promise(r => setTimeout(r, ms));
+async function playConvo(screen, convo) {
+  const token = Symbol(); screen._token = token;
+  const body = screen.querySelector('.convo-body');
+  screen.querySelector('.screen-head b').textContent = convo.business;
+  body.innerHTML = '';
+  for (const m of convo.messages) {
+    if (screen._token !== token) return;
+    if (m.from === 'out') {
+      const t = document.createElement('div'); t.className = 'typing'; t.innerHTML = '<span></span><span></span><span></span>';
+      body.appendChild(t); await wait(900); if (screen._token !== token) return; t.remove();
+    } else { await wait(700); if (screen._token !== token) return; }
+    const d = document.createElement('div'); d.className = 'msg ' + m.from; d.textContent = m.text;
+    body.appendChild(d); requestAnimationFrame(() => requestAnimationFrame(() => d.classList.add('show')));
+    await wait(500);
+  }
+  await wait(500); if (screen._token !== token) return;
+  const b = document.createElement('div'); b.className = 'booked'; b.textContent = '📅 Appointment booked · ' + convo.booked;
+  body.appendChild(b); requestAnimationFrame(() => requestAnimationFrame(() => b.classList.add('show')));
+}
+
+const CONVOS = {
+  home: { business: 'Brightline Kitchens', booked: 'Sat 10:00', messages: [
+    { from: 'out', text: "Hi Sarah, it's Jess from Brightline Kitchens. You asked about a new kitchen last spring. Is that still on the cards?" },
+    { from: 'in', text: "Oh hi! Yes, we put it on hold but we're thinking about it again" },
+    { from: 'out', text: 'Great to hear! Would a free updated quote help? We have a designer near you Thursday or Saturday.' },
+    { from: 'in', text: 'Saturday morning works' },
+    { from: 'out', text: "Perfect, you're booked for Saturday at 10am. See you then 🙂" } ] },
+  solar: { business: 'Northgate Solar', booked: 'Tue 14:00', messages: [
+    { from: 'out', text: "Hi Mark, it's Amy at Northgate Solar. You enquired about panels last year. Prices have dropped since. Still worth a look?" },
+    { from: 'in', text: 'Possibly, what sort of difference are we talking?' },
+    { from: 'out', text: 'It depends on your roof, but we can do a free updated survey and show you the exact numbers. Tuesday or Wednesday?' },
+    { from: 'in', text: 'Tuesday afternoon' },
+    { from: 'out', text: "Lovely, Tuesday at 2pm is booked. You'll get a reminder the day before." } ] },
+  dental: { business: 'Riverside Dental', booked: 'Thu 17:30', messages: [
+    { from: 'out', text: "Hi Priya, it's Sophie from Riverside Dental. You came in about Invisalign a while back. Still thinking about it?" },
+    { from: 'in', text: 'I am, I was just worried about the cost' },
+    { from: 'out', text: 'Totally understand. We now offer monthly payment plans. Would a quick free chat with Dr Evans help?' },
+    { from: 'in', text: 'Yes please, after work if possible' },
+    { from: 'out', text: "Done! Thursday at 5:30pm. We'll see you then 😊" } ] },
+  aesthetics: { business: 'Luma Skin Clinic', booked: 'Fri 12:00', messages: [
+    { from: 'out', text: "Hi Emma, it's Chloe from Luma Skin Clinic. You asked about skin treatments in the spring. Is that still something you're keen on?" },
+    { from: 'in', text: 'Yes! Life just got busy' },
+    { from: 'out', text: "Happens to everyone! We've got free consultation slots this week. Would Friday lunchtime suit?" },
+    { from: 'in', text: 'Friday at 12 is perfect' },
+    { from: 'out', text: "Great, you're booked in for Friday at 12. See you soon ✨" } ] },
+  auto: { business: 'Hillside Motors', booked: 'Sat 11:00', messages: [
+    { from: 'out', text: "Hi James, it's Tom at Hillside Motors. You were looking at a family SUV in the summer. Still in the market?" },
+    { from: 'in', text: "Yeah, haven't found the right one yet" },
+    { from: 'out', text: "We've had a few great ones come in. Want to pop down for a test drive this weekend?" },
+    { from: 'in', text: 'Saturday morning?' },
+    { from: 'out', text: "Booked for Saturday at 11am. I'll have the keys ready 🚗" } ] },
+  property: { business: 'Harper & Lane Estates', booked: 'Wed 18:00', messages: [
+    { from: 'out', text: "Hi David, it's Rachel at Harper & Lane. We valued your home earlier this year. Are you still thinking of selling?" },
+    { from: 'in', text: 'Maybe in the new year' },
+    { from: 'out', text: 'Makes sense. The market has moved since, so a free updated valuation could help you plan. Fancy one this week?' },
+    { from: 'in', text: 'Wednesday evening could work' },
+    { from: 'out', text: "Perfect, Wednesday at 6pm is booked in. Speak then!" } ] },
+};
+
+document.querySelectorAll('.screen[data-convo]:not(#indScreen)').forEach(screen => {
+  let started = false;
+  const start = () => playConvo(screen, CONVOS[screen.dataset.convo]);
+  new IntersectionObserver((es, o) => {
+    if (es[0].isIntersecting && !started) { started = true; start(); o.disconnect(); }
+  }, { threshold: .35 }).observe(screen);
+  const rb = document.querySelector(`[data-replay="${screen.id}"]`);
+  if (rb) rb.onclick = start;
+});
+
+// ---------- Industry tabs ----------
+const IND = window.INDUSTRIES || null;
+if (IND) {
+  const screen = document.getElementById('indScreen');
+  const panel = document.getElementById('indPanel');
+  function show(key) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.key === key));
+    const d = IND[key];
+    panel.style.opacity = 0;
+    setTimeout(() => {
+      panel.innerHTML = `
+        <span class="eyebrow">${d.tag}</span>
+        <h2>${d.title}</h2>
+        <p class="lead">${d.intro}</p>
+        <div class="ind-facts">
+          <div class="fact"><small>Typical job value</small><b>${d.value}</b></div>
+          <div class="fact"><small>Best leads to revive</small><b>${d.age}</b></div>
+          <div class="fact"><small>Reason to re-engage</small><b>${d.hook}</b></div>
+        </div>
+        <ul class="checks">${d.points.map(p => `<li>${p}</li>`).join('')}</ul>`;
+      panel.style.opacity = 1;
+    }, 200);
+    screen.dataset.convo = key;
+    playConvo(screen, CONVOS[key]);
+    history.replaceState(null, '', '#' + key);
+  }
+  document.querySelectorAll('.tab').forEach(t => t.onclick = () => {
+    show(t.dataset.key);
+    document.getElementById('explorer').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+  const initial = location.hash.slice(1);
+  show(IND[initial] ? initial : 'home');
+  document.querySelectorAll('[data-goto]').forEach(a => a.onclick = e => {
+    e.preventDefault(); show(a.dataset.goto);
+    document.getElementById('explorer').scrollIntoView({ behavior: 'smooth' });
+  });
+  document.getElementById('indReplay').onclick = () => playConvo(screen, CONVOS[screen.dataset.convo]);
+}
+
+// ---------- Video ----------
+const v = document.getElementById('vsl'), ph = document.getElementById('vslPh'), pb = document.getElementById('playBtn');
+if (v && pb) {
+  let ready = false;
+  v.addEventListener('loadedmetadata', () => ready = true);
+  pb.onclick = () => {
+    if (ready) { ph.style.display = 'none'; v.style.display = 'block'; v.play(); }
+    else alert('Add your video as vsl.mp4 in the same folder as this page.');
+  };
+}
+
+// ---------- Calculator ----------
+const $ = id => document.getElementById(id);
+if ($('leads')) {
+  const gbp = n => '£' + Math.round(n).toLocaleString('en-GB');
+  const calc = () => {
+    const L = +$('leads').value, V = +$('value').value, B = +$('book').value, C = +$('close').value;
+    const appts = Math.round(L * B / 100), custs = Math.round(appts * C / 100);
+    $('oLeads').textContent = L.toLocaleString('en-GB'); $('oValue').textContent = gbp(V);
+    $('oBook').textContent = B + '%'; $('oClose').textContent = C + '%';
+    $('appts').textContent = appts; $('custs').textContent = custs; $('rev').textContent = gbp(custs * V);
+  };
+  ['leads', 'value', 'book', 'close'].forEach(id => $(id).addEventListener('input', calc)); calc();
+}
+
+// ---------- Forms & year ----------
+document.querySelectorAll('form.audit').forEach(f => f.onsubmit = e => {
+  e.preventDefault();
+  f.innerHTML = '<p style="font-weight:700;font-size:1.15rem">Thanks! We\'ll be in touch within one working day.</p>';
+});
+document.querySelectorAll('.yr').forEach(y => y.textContent = new Date().getFullYear());
+
+</script>
+</body>
+</html>
