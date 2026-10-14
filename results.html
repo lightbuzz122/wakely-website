@@ -350,6 +350,73 @@ footer{padding:60px 0 40px;color:var(--muted);font-size:.9rem}
 }
 @media(hover:none){.glow-zone::after,.card::before{display:none}}
 </style>
+<style>
+:root{--navy-3:#1E3360}
+.kicker{display:inline-flex;align-items:center;gap:10px;font-size:.76rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--coral)}
+.kicker::before{content:"";width:22px;height:1.5px;background:currentColor;opacity:.7}
+.sunrise{position:absolute;left:50%;bottom:-430px;width:860px;height:860px;transform:translateX(-50%);z-index:0;pointer-events:none}
+.sunrise .core{position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 50% 40%,#FFC86A 0%,#F7A23A 38%,#F26B4F 70%,rgba(242,107,79,0) 72%);filter:blur(2px);opacity:.9;animation:breathe 8s ease-in-out infinite}
+.sunrise .ring{position:absolute;border-radius:50%;border:1px solid rgba(242,107,79,.18)}
+.sunrise .r1{inset:-80px}.sunrise .r2{inset:-180px;border-color:rgba(242,107,79,.12)}.sunrise .r3{inset:-300px;border-color:rgba(242,107,79,.07)}
+@keyframes breathe{50%{transform:scale(1.03);opacity:1}}
+/* final CTA */
+.final{padding:40px 0 70px}
+.final-card{position:relative;overflow:hidden;border-radius:40px;margin:0 18px;padding:110px 28px 120px;text-align:center;color:#fff;
+  background:linear-gradient(180deg,var(--navy-2) 0%,var(--navy) 55%,#2A2340 100%);box-shadow:0 50px 100px -50px rgba(14,27,51,.8)}
+.final-card .sunrise{bottom:-700px;width:960px;height:960px;opacity:.75}
+.final-card .glowline{position:absolute;left:0;right:0;bottom:0;height:200px;background:linear-gradient(180deg,transparent,rgba(242,107,79,.25));pointer-events:none}
+.final-inner{position:relative;z-index:2;max-width:720px;margin:0 auto;display:flex;flex-direction:column;align-items:center}
+.final-inner h2{color:#fff}
+.final-inner > p{color:rgba(255,255,255,.75);margin:18px auto 40px;max-width:560px;font-size:1.12rem}
+.form-card{width:100%;max-width:620px;background:rgba(255,255,255,.96);border-radius:24px;padding:10px;box-shadow:0 30px 60px -20px rgba(0,0,0,.5),inset 0 1px 0 #fff}
+form.audit{display:flex;gap:8px}
+form.audit .btn{flex:none;white-space:nowrap}
+form.audit input{flex:1 1 0;min-width:0;padding:16px 18px;border-radius:16px;border:0;font-family:inherit;font-size:1rem;outline:none;color:var(--ink);background:var(--cream);box-shadow:inset 0 0 0 1px var(--line);transition:box-shadow .2s}
+form.audit input:focus{box-shadow:inset 0 0 0 2px var(--amber)}
+form.audit .btn{border-radius:16px}
+.form-done{padding:18px;color:var(--navy);font-weight:700}
+.final-ticks{display:flex;gap:22px;justify-content:center;flex-wrap:wrap;margin-top:22px;font-size:.86rem;color:rgba(255,255,255,.75)}
+.final-ticks span{display:inline-flex;gap:7px;align-items:center}
+.final-ticks svg{color:var(--amber)}
+
+/* ---- navy surfaces: texture, sunrise rings, monogram, bevel ---- */
+.band-card,.dark,.final-card,.plan.feature,.result{isolation:isolate}
+.band-card,.dark,.final-card{box-shadow:0 50px 100px -50px rgba(14,27,51,.8),inset 0 1px 0 rgba(255,255,255,.10),inset 0 -1px 0 rgba(0,0,0,.35),inset 0 0 0 1px rgba(255,255,255,.04)!important}
+.tex{position:absolute;inset:0;z-index:0;pointer-events:none;border-radius:inherit;overflow:hidden}
+.tex::before{content:"";position:absolute;inset:0;
+  background:
+   radial-gradient(rgba(255,255,255,.075) 1px,transparent 1.6px) 0 0/22px 22px,
+   repeating-radial-gradient(circle at 100% 0%,rgba(255,255,255,.035) 0 1px,transparent 1px 34px);
+  -webkit-mask-image:radial-gradient(120% 90% at 85% 0%,#000 0%,rgba(0,0,0,.55) 45%,transparent 80%);mask-image:radial-gradient(120% 90% at 85% 0%,#000 0%,rgba(0,0,0,.55) 45%,transparent 80%)}
+.tex::after{content:"w";position:absolute;right:-.06em;bottom:-.34em;font-family:"Fraunces",Georgia,serif;font-style:italic;font-weight:500;font-size:clamp(260px,34vw,520px);line-height:1;color:transparent;-webkit-text-stroke:1.5px rgba(255,255,255,.07);
+  background:linear-gradient(180deg,rgba(245,165,36,.10),transparent 70%);-webkit-background-clip:text;background-clip:text}
+.tex.left::after{right:auto;left:-.04em}
+.tex.small::after{font-size:300px;bottom:-.3em}
+.band-card > *:not(.tex),.dark > .wrap,.final-card > .final-inner,.plan.feature > *:not(.tex),.result > *:not(.tex){position:relative;z-index:1}
+.stage{background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.02))!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.12),inset 0 0 0 1px rgba(255,255,255,.07),0 14px 24px -16px rgba(0,0,0,.6)!important;backdrop-filter:blur(4px)}
+.stage:hover{background:linear-gradient(180deg,rgba(255,255,255,.11),rgba(255,255,255,.04))!important}
+.stage.last{background:linear-gradient(160deg,rgba(245,165,36,.26),rgba(242,107,79,.10))!important;box-shadow:inset 0 1px 0 rgba(255,220,160,.35),inset 0 0 0 1px rgba(245,165,36,.4),0 18px 34px -16px rgba(242,107,79,.55)!important}
+.cp .n{background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02))}
+
+
+/* ---- night sky on navy panels ---- */
+.sky-layer{position:absolute;inset:0;transition:transform .8s cubic-bezier(.2,.7,.3,1)}
+.star{position:absolute;border-radius:50%;background:#fff;opacity:var(--o,.35);box-shadow:0 0 4px rgba(255,255,255,.6);animation:twinkle var(--t,4s) ease-in-out var(--d,0s) infinite;transition:opacity .6s}
+.star.warm{background:#FFD58A;box-shadow:0 0 6px rgba(245,165,36,.8)}
+@keyframes twinkle{50%{opacity:calc(var(--o,.35) * .25)}}
+.night-on .star{opacity:calc(var(--o,.35) + .4)}
+.shoot{position:absolute;width:120px;height:1.5px;border-radius:2px;background:linear-gradient(90deg,rgba(255,255,255,0),rgba(255,236,200,.95));opacity:0;transform-origin:100% 50%;transform:rotate(var(--ang,0deg));pointer-events:none}
+.shoot::after{content:"";position:absolute;right:-2px;top:-1.5px;width:4px;height:4px;border-radius:50%;background:#fff;box-shadow:0 0 8px 2px rgba(255,220,160,.8)}
+.shoot.go{animation:shoot 1.1s ease-out forwards}
+@keyframes shoot{0%{opacity:0;translate:0 0}15%{opacity:1}100%{opacity:0;translate:var(--dx) var(--dy)}}
+@media(prefers-reduced-motion:reduce){.star{animation:none}.shoot{display:none}}
+
+
+.dark{position:relative;overflow:hidden;isolation:isolate}.dark > .wrap{position:relative;z-index:1}
+.case-side{position:relative;overflow:hidden;isolation:isolate}.case-side > *:not(.tex){position:relative;z-index:1}
+@media(max-width:760px){.final-card{margin:0 10px;border-radius:26px;padding:70px 18px 90px}form.audit{flex-direction:column}}
+
+</style>
 </head>
 <body>
 
@@ -401,7 +468,7 @@ footer{padding:60px 0 40px;color:var(--muted);font-size:.9rem}
 
       <!-- CASE STUDY 1 -->
       <article class="card case reveal">
-        <div class="case-side">
+        <div class="case-side"><div class="tex small"></div>
           <div>
             <div class="case-logo">LOGO</div>
             <span class="tag">Home improvement</span>
@@ -427,7 +494,7 @@ footer{padding:60px 0 40px;color:var(--muted);font-size:.9rem}
 
       <!-- CASE STUDY 2 -->
       <article class="card case reveal">
-        <div class="case-side">
+        <div class="case-side"><div class="tex small"></div>
           <div>
             <div class="case-logo">LOGO</div>
             <span class="tag">Dental</span>
@@ -453,7 +520,7 @@ footer{padding:60px 0 40px;color:var(--muted);font-size:.9rem}
 
       <!-- CASE STUDY 3 -->
       <article class="card case reveal">
-        <div class="case-side">
+        <div class="case-side"><div class="tex small"></div>
           <div>
             <div class="case-logo">LOGO</div>
             <span class="tag">Solar &amp; energy</span>
@@ -480,7 +547,7 @@ footer{padding:60px 0 40px;color:var(--muted);font-size:.9rem}
   </div>
 </section>
 
-<section class="dark glow-zone">
+<section class="dark glow-zone"><div class="tex left"></div>
   <div class="wrap">
     <div class="center reveal">
       <span class="eyebrow">How we report</span>
@@ -496,12 +563,18 @@ footer{padding:60px 0 40px;color:var(--muted);font-size:.9rem}
   </div>
 </section>
 
-<section style="padding:110px 0 60px" id="audit">
-  <div class="cta glow-zone">
-    <div class="wrap">
-      <h2>Want to be our next result?</h2>
+<section class="final" id="audit">
+  <div class="final-card"><div class="tex"></div>
+    <div class="sunrise"><div class="ring r3"></div><div class="ring r2"></div><div class="ring r1"></div><div class="core"></div></div>
+    <div class="glowline"></div>
+    <div class="final-inner reveal">
+      <span class="kicker" style="color:var(--amber)">Free list audit</span>
+      <h2 style="margin-top:16px">Want to be our next result?</h2>
       <p>Start with a free list audit. We'll show you what's possible before you pay a penny.</p>
-      <form class="audit"><input type="text" placeholder="Business name" required><input type="email" placeholder="Work email" required><button class="btn btn-navy" type="submit">Get my free audit</button></form>
+      <div class="form-card">
+        <form class="audit"><input type="text" placeholder="Business name" required aria-label="Business name"><input type="email" placeholder="Work email" required aria-label="Work email"><button class="btn btn-sun" type="submit">Get my free audit</button></form>
+      </div>
+      <div class="final-ticks"><span>✓ No obligation</span><span>✓ No upfront cost</span><span>✓ Reply within one working day</span></div>
     </div>
   </div>
 </section>
@@ -682,5 +755,29 @@ document.querySelectorAll('form.audit').forEach(f => f.onsubmit = e => {
 document.querySelectorAll('.yr').forEach(y => y.textContent = new Date().getFullYear());
 
 </script>
+<script>(()=>{const finePointer=matchMedia('(hover:hover) and (pointer:fine)').matches;const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+// night sky: twinkling stars in every navy panel, brighter + a shooting star on hover
+// each panel gets its own flight path: [start x%, start y%, travel x px, travel y px]
+const PATHS=[[85,12,-340,150],[12,10,330,140],[88,85,-300,-130],[10,80,340,-110],[50,5,40,260],[95,45,-380,10]];
+document.querySelectorAll('.tex').forEach((tex,pi)=>{
+  const panel=tex.parentElement,layer=document.createElement('div');layer.className='sky-layer';
+  const n=tex.classList.contains('small')?18:46;
+  for(let i=0;i<n;i++){const st=document.createElement('i');st.className='star'+(Math.random()<.12?' warm':'');
+    const z=Math.random()*1.6+.8;st.style.cssText=`left:${Math.random()*100}%;top:${Math.random()*100}%;width:${z}px;height:${z}px;--o:${(Math.random()*.35+.12).toFixed(2)};--t:${(3+Math.random()*4).toFixed(1)}s;--d:-${(Math.random()*5).toFixed(1)}s`;
+    layer.appendChild(st)}
+  const sh=document.createElement('i');sh.className='shoot';layer.appendChild(sh);tex.appendChild(layer);
+  if(!finePointer||reduce)return;
+  let last=0,shots=0;
+  panel.addEventListener('mouseenter',()=>{panel.classList.add('night-on');const now=Date.now();if(now-last>2500){last=now;
+    const [sx,sy,dx0,dy0]=PATHS[(pi+shots++)%PATHS.length];
+    const wob=(Math.random()-.5)*0.35,dx=dx0*Math.cos(wob)-dy0*Math.sin(wob),dy=dx0*Math.sin(wob)+dy0*Math.cos(wob);
+    sh.style.left=(sx+(Math.random()-.5)*10)+'%';sh.style.top=(sy+(Math.random()-.5)*10)+'%';
+    sh.style.setProperty('--dx',dx+'px');sh.style.setProperty('--dy',dy+'px');sh.style.setProperty('--ang',Math.atan2(dy,dx)+'rad');
+    sh.classList.remove('go');void sh.offsetWidth;sh.classList.add('go')}});
+  panel.addEventListener('mouseleave',()=>{panel.classList.remove('night-on');layer.style.transform=''});
+  panel.addEventListener('mousemove',e=>{const r=panel.getBoundingClientRect();const x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;layer.style.transform=`translate(${x*-14}px,${y*-10}px)`});
+});
+
+})();</script>
 </body>
 </html>
