@@ -113,7 +113,10 @@ nav.scrolled{border-color:var(--line);box-shadow:0 8px 24px -18px rgba(14,27,51,
 .vsl{position:relative;z-index:3;max-width:980px;margin:72px auto 0;padding-bottom:110px}
 .vsl-frame{position:relative;border-radius:22px;overflow:hidden;aspect-ratio:16/9;background:var(--navy);
   box-shadow:0 0 0 1px rgba(14,27,51,.08),0 0 0 8px rgba(255,255,255,.7),0 0 0 9px var(--line),0 40px 80px -30px rgba(14,27,51,.5),0 80px 140px -60px rgba(242,107,79,.45)}
-.vsl-frame video{width:100%;height:100%;object-fit:cover}
+.vsl-frame video{width:100%;height:100%;object-fit:cover;display:block}
+.vsl-ph[hidden]{display:none}
+.sound{position:absolute;right:16px;bottom:16px;z-index:3;display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border:0;border-radius:999px;font:700 .86rem 'Plus Jakarta Sans',sans-serif;color:#fff;background:rgba(14,27,51,.6);backdrop-filter:blur(8px);box-shadow:inset 0 0 0 1px rgba(255,255,255,.2);cursor:pointer;transition:background .2s}
+.sound:hover{background:rgba(242,107,79,.85)}
 .vsl-ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;color:#fff;text-align:center;
   background:radial-gradient(600px 300px at 50% 120%,rgba(245,165,36,.55),transparent 70%),radial-gradient(circle at 15% 10%,rgba(255,255,255,.06),transparent 40%),linear-gradient(160deg,var(--navy-3),var(--navy))}
 .vsl-ph::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(255,255,255,.025) 0 1px,transparent 1px 4px);pointer-events:none}
@@ -487,8 +490,9 @@ footer{padding:60px 0 40px;color:var(--muted);font-size:.9rem}
     <div class="vsl reveal">
       <div class="vsl-frame">
         <!-- Put your VSL next to this page and name it vsl.mp4 -->
-        <video id="vsl" src="vsl.mp4" poster="vsl-poster.jpg" controls playsinline preload="auto" style="display:none"></video>
-        <div class="vsl-ph" id="vslPh">
+        <video id="vsl" src="vsl.mp4" poster="vsl-poster.jpg" autoplay muted loop playsinline preload="auto"></video>
+        <button class="sound" id="soundBtn" aria-label="Turn sound on"><span>🔈</span> Sound on</button>
+        <div class="vsl-ph" id="vslPh" hidden>
           <button class="play" id="playBtn" aria-label="Play video"><svg width="30" height="30" viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z"/></svg></button>
           <p>See how Wakely wakes up an old list</p>
           <small>2-minute overview</small>
@@ -839,8 +843,8 @@ const sIO=new IntersectionObserver(es=>{if(es[0].isIntersecting){play();sIO.disc
 sIO.observe(screen);$('replayBtn').onclick=play;
 
 // video
-(()=>{const v=$('vsl'),ph=$('vslPh');
-  $('playBtn').onclick=()=>{ph.style.display='none';v.style.display='block';const p=v.play();if(p&&p.catch)p.catch(()=>{})}})();
+(()=>{const v=$('vsl'),b=$('soundBtn');v.muted=true;const p=v.play();if(p&&p.catch)p.catch(()=>{});
+  b.onclick=()=>{v.muted=!v.muted;if(!v.muted){v.currentTime=0;v.play()}b.innerHTML=v.muted?'<span>🔈</span> Sound on':'<span>🔇</span> Mute';b.setAttribute('aria-label',v.muted?'Turn sound on':'Mute')}})();
 
 // calculator
 const gbp=n=>'£'+fmt(n);
