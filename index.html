@@ -487,7 +487,7 @@ footer{padding:60px 0 40px;color:var(--muted);font-size:.9rem}
     <div class="vsl reveal">
       <div class="vsl-frame">
         <!-- Put your VSL next to this page and name it vsl.mp4 -->
-        <video id="vsl" src="vsl.mp4" controls playsinline preload="metadata" style="display:none"></video>
+        <video id="vsl" src="vsl.mp4" poster="vsl-poster.jpg" controls playsinline preload="auto" style="display:none"></video>
         <div class="vsl-ph" id="vslPh">
           <button class="play" id="playBtn" aria-label="Play video"><svg width="30" height="30" viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z"/></svg></button>
           <p>See how Wakely wakes up an old list</p>
@@ -839,8 +839,8 @@ const sIO=new IntersectionObserver(es=>{if(es[0].isIntersecting){play();sIO.disc
 sIO.observe(screen);$('replayBtn').onclick=play;
 
 // video
-(()=>{const v=$('vsl'),ph=$('vslPh');let ready=false;v.addEventListener('loadedmetadata',()=>ready=true);
-  $('playBtn').onclick=()=>{if(ready){ph.style.display='none';v.style.display='block';v.play()}else alert('Video coming soon.')}})();
+(()=>{const v=$('vsl'),ph=$('vslPh');
+  $('playBtn').onclick=()=>{ph.style.display='none';v.style.display='block';const p=v.play();if(p&&p.catch)p.catch(()=>{})}})();
 
 // calculator
 const gbp=n=>'£'+fmt(n);
